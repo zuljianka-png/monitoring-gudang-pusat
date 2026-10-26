@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WMS - Persediaan & Monitoring Gudang</title>
+  <title>Persediaan Gudang</title>
   <!-- Google Fonts & FontAwesome Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,9 +84,10 @@
       place-items: center;
       font-size: 20px;
       box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+      flex-shrink: 0;
     }
-    .brand { font-size: 16px; font-weight: 800; letter-spacing: -0.02em; color: #fff; }
-    .sub { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+    .brand { font-size: 15px; font-weight: 800; letter-spacing: -0.01em; color: #fff; line-height: 1.2; word-break: break-word; }
+    .sub { font-size: 11px; color: #94a3b8; margin-top: 3px; }
 
     .nav { display: grid; gap: 6px; }
     .nav button {
@@ -171,6 +172,10 @@
     .footer { font-size: 12px; color: var(--text-muted); margin-top: 24px; text-align: center; }
     .empty { text-align: center; padding: 32px; color: var(--text-muted); font-size: 13px; }
     .hidden { display: none !important; }
+
+    /* SECTIONS */
+    .section { display: none; }
+    .section.active { display: block !important; }
 
     /* LOGIN SCREEN */
     .login-screen {
@@ -267,8 +272,8 @@
     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
       <div class="brandmark"><i class="fa-solid fa-boxes-stacked"></i></div>
       <div>
-        <div style="font-weight:800; font-size:18px; color:var(--dark-navy)">WMS Monitor</div>
-        <div style="font-size:12px; color:var(--text-muted)">Warehouse Management System</div>
+        <div style="font-weight:800; font-size:18px; color:var(--dark-navy)">Monitoring Gudang</div>
+        <div style="font-size:12px; color:var(--text-muted)">Sistem Manajemen Gudang</div>
       </div>
     </div>
     <h1>Masuk Akun</h1>
@@ -302,9 +307,9 @@
   <!-- SIDEBAR NAVIGATION -->
   <aside class="side" id="sideNav">
     <div class="brandlockup">
-      <div class="brandmark"><i class="fa-solid fa-boxes-stacked"></i></div>
+      <div class="brandmark"><i class="fa-solid fa-user-check"></i></div>
       <div>
-        <div class="brand">WMS LOGISTIK</div>
+        <div class="brand" id="headerUserName">Memuat...</div>
         <div class="sub">Sistem Manajemen Gudang</div>
       </div>
     </div>
@@ -332,7 +337,7 @@
         <button class="hamburger" type="button" onclick="toggleNav()"><i class="fa-solid fa-bars"></i></button>
         <div>
           <div class="eyebrow">Aplikasi Gudang</div>
-          <h1 id="pageTitle">Ringkasan</h1>
+          <h1 id="pageTitle">Dashboard Gudang</h1>
         </div>
       </div>
       <div class="actions">
@@ -374,7 +379,7 @@
           <div class="panelhead">
             <div>
               <h2>Pergerakan Bulanan</h2>
-              <div class="muted">Masuk dibanding keluar</div>
+              <div class="muted">Ringkasan stok</div>
             </div>
           </div>
           <div id="categoryBars"></div>
@@ -392,7 +397,7 @@
       </div>
     </section>
 
-    <!-- SECTION TRANSAKSI -->
+    <!-- SECTION TRANSAKSI STOK -->
     <section class="section" id="transaksi">
       <div class="panel">
         <div class="panelhead">
@@ -439,7 +444,7 @@
       </div>
     </section>
 
-    <!-- SECTION PERSEDIAAN -->
+    <!-- SECTION PERSEDIAAN STOK -->
     <section class="section" id="persediaan">
       <div class="toolbar">
         <div>
@@ -566,7 +571,7 @@
       </div>
     </section>
 
-    <div class="footer">WMS Monitor v2.5 &bull; Dikembangkan untuk Manajemen Logistik Gudang</div>
+    <div class="footer">Monitoring Gudang &bull; Sistem Manajemen Logistik</div>
   </main>
 </div>
 
@@ -635,7 +640,7 @@ function saveLocal() {
   try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(e){}
 }
 
-// MEMERIKSA SESI PERSISTEN SAAT PAGE LOAD (AUTO LOGIN SETELAH REFRESH)
+// INSIALISASI SESI PERSISTEN
 async function initSession() {
   loadLocal();
   const { data: { session } } = await supabaseClient.auth.getSession();
@@ -662,7 +667,11 @@ function isDeveloper() {
 function setupUserSession(profile) {
   document.getElementById('loginScreen').classList.add('hidden');
   document.querySelector('.layout').classList.remove('hidden');
-  document.getElementById('sessionLabel').textContent = `${profile.full_name} (${isDeveloper() ? 'Developer' : 'Karyawan'})`;
+  
+  // PEMBARUAN NAMA LENGKAP DI HEADER KIRI ATAS
+  const displayName = profile.full_name || profile.nik || 'Petugas Gudang';
+  document.getElementById('headerUserName').textContent = displayName;
+  document.getElementById('sessionLabel').textContent = `${displayName} (${isDeveloper() ? 'Developer' : 'Karyawan'})`;
   
   document.querySelector('[data-page="developer"]').classList.toggle('hidden', !isDeveloper());
   document.querySelector('[data-page="data"]').classList.toggle('hidden', !isDeveloper());
@@ -714,7 +723,7 @@ document.getElementById('loginForm').addEventListener('submit', async e => {
   }
 });
 
-// UPDATE PROFIL NAMA
+// UPDATE PROFIL NAMA - OTOMATIS BERUBAH DI HEADER KIRI ATAS
 document.getElementById('profileForm').addEventListener('submit', async e => {
   e.preventDefault();
   const msg = document.getElementById('profileMessage');
@@ -726,6 +735,8 @@ document.getElementById('profileForm').addEventListener('submit', async e => {
     if(error) throw error;
     currentProfile.full_name = newName;
     sessionStorage.setItem('wms_profile', JSON.stringify(currentProfile));
+    
+    // PERBARUI NAMA SEKETIKA PADA TAMPILAN
     setupUserSession(currentProfile);
     msg.textContent = 'Profil berhasil diperbarui!';
   } catch(err) {
@@ -767,21 +778,49 @@ function toggleNav(force) {
   back.classList.toggle('show', open);
 }
 
+// PERBAIKAN SWITCH MENU / SECTIONS SECARA LANGSUNG
 function go(page) {
-  if (!document.getElementById(page)) page = 'dashboard';
-  document.querySelectorAll('.section').forEach(x => x.classList.toggle('active', x.id === page));
-  document.querySelectorAll('.nav button, .mobile-tabbar button[data-page]').forEach(x => x.classList.toggle('active', x.dataset.page === page));
-  document.getElementById('pageTitle').textContent = ({
-    dashboard: 'Dashboard Gudang', transaksi: 'Transaksi Masuk / Keluar', persediaan: 'Master Persediaan',
-    lokasi: 'Lokasi & Kapasitas', pengadaan: 'Stok Menipis & Pengadaan', data: 'Import / Export Data',
-    developer: 'Developer & Data Petugas', profil: 'Profil Saya'
-  })[page] || 'Dashboard Gudang';
+  if (!page || !document.getElementById(page)) page = 'dashboard';
+  
+  // Sembunyikan semua section, hanya aktifkan section pilihan
+  document.querySelectorAll('.section').forEach(sec => {
+    sec.classList.remove('active');
+  });
+  const targetSection = document.getElementById(page);
+  if(targetSection) {
+    targetSection.classList.add('active');
+  }
+
+  // Perbarui status aktif tombol navigasi
+  document.querySelectorAll('.nav button, .mobile-tabbar button[data-page]').forEach(b => {
+    b.classList.toggle('active', b.dataset.page === page);
+  });
+
+  // Perbarui Judul Halaman Topbar
+  const titles = {
+    dashboard: 'Dashboard Gudang', 
+    transaksi: 'Transaksi Masuk / Keluar', 
+    persediaan: 'Master Persediaan Stok',
+    lokasi: 'Lokasi & Kapasitas Rak', 
+    pengadaan: 'Stok Menipis & Pengadaan', 
+    data: 'Import / Export Data',
+    developer: 'Developer & Data Petugas', 
+    profil: 'Profil Saya'
+  };
+  document.getElementById('pageTitle').textContent = titles[page] || 'Dashboard Gudang';
+
   renderAll();
   toggleNav(false);
 }
 
+// PASTI KAN SETIAP TOMBOL NAVIGASI BERFUNGSI SEKETIKA
 document.querySelectorAll('.nav button, .mobile-tabbar button[data-page]').forEach(b => {
-  if (b.dataset.page) b.addEventListener('click', () => go(b.dataset.page));
+  if (b.dataset.page) {
+    b.addEventListener('click', (e) => {
+      e.preventDefault();
+      go(b.dataset.page);
+    });
+  }
 });
 
 const fmt = n => n === null || n === undefined || n === '' ? '—' : Number(n).toLocaleString('id-ID');
