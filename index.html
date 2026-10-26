@@ -8,14 +8,90 @@
 @media(max-width:520px){.top{flex-direction:column}.top h1{font-size:22px}.cards{gap:8px}.card{padding:12px}.kvalue{font-size:21px}.fieldgrid{grid-template-columns:1fr}.main{padding:10px}}
 
 .login-screen{position:fixed;inset:0;z-index:9999;background:#f3f6fb;display:flex;align-items:center;justify-content:center;padding:18px}.login-card{width:min(420px,100%);background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 12px 40px #0f172a18}.login-card h1{margin:0 0 5px;font-size:23px}.login-card .field{margin-top:12px}.login-card .field input{padding:12px;border:1px solid #cbd5e1;border-radius:8px;width:100%}.login-status{margin-top:12px;font-size:12px;color:#b91c1c;white-space:pre-wrap}.sessionbar{font-size:12px;color:#475569;align-self:center}
+
+/* WMS UI refinement: presentation-only overrides, existing business logic preserved */
+:root{--navy:#122b49;--blue:#2463eb;--bg:#f4f7fb;--ink:#182538;--muted:#718096;--line:#e4eaf2;--green:#16804a;--orange:#c66a12;--red:#c03935}
+body{background:var(--bg);font-family:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--ink)}
+.layout{grid-template-columns:252px minmax(0,1fr)}
+.side{background:linear-gradient(180deg,#102844 0%,#17395e 100%);padding:24px 14px 16px;display:flex;flex-direction:column;min-height:100vh;box-shadow:5px 0 22px #1028440d}
+.brandlockup{display:flex;align-items:center;gap:11px;padding:2px 9px 22px;border-bottom:1px solid #ffffff1c;margin-bottom:19px}
+.brandmark{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,#60a5fa,#2563eb);color:#fff;font-weight:900;font-size:19px;box-shadow:0 6px 16px #02061738}
+.brand{font-size:14px;letter-spacing:.055em;font-weight:850;color:#fff}
+.sub{font-size:11px;color:#a9bfd8;margin:4px 0 0}
+.nav{gap:5px}
+.nav-label{padding:7px 11px 5px;font-size:9px;letter-spacing:.13em;font-weight:800;color:#8fa9c6}
+.nav-label-secondary{margin-top:13px}
+.nav button{display:flex;align-items:center;gap:12px;width:100%;min-height:42px;padding:10px 12px;border-radius:9px;color:#d2deec;font-size:12px;font-weight:650;transition:background .15s,color .15s,transform .15s}
+.nav button:hover{background:#ffffff12;color:#fff;transform:translateX(1px)}
+.nav button.active{background:linear-gradient(100deg,#2d6ce3,#2458b5);color:#fff;box-shadow:0 5px 13px #081a3045}
+.navicon{display:inline-grid;place-items:center;width:21px;flex:0 0 21px;font-size:17px;color:inherit}
+.side-footer{margin-top:auto;border-top:1px solid #ffffff1c;padding:17px 10px 0;color:#b8c9dd;font-size:10px;display:grid;grid-template-columns:8px 1fr;gap:2px 8px;align-items:center}
+.side-footer small{grid-column:2;color:#809bb8;font-size:9px}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 4px #4ade8019}
+.main{padding:27px 30px;max-width:1800px;width:100%;margin:0 auto}
+.top{align-items:center;margin-bottom:24px}
+.top h1{font-size:27px;font-weight:800;letter-spacing:-.035em;color:#14263d}
+.eyebrow{font-size:10px;letter-spacing:.13em;color:#4776c5}
+.actions{align-items:center}
+button{border-radius:9px;transition:filter .15s,transform .15s,box-shadow .15s}
+button:hover{filter:brightness(.98)}
+button:active{transform:translateY(1px)}
+.primary{background:#2463eb;box-shadow:0 3px 8px #2463eb22}
+.soft{background:#edf2f8;color:#284562;border:1px solid #e1e8f1}
+.danger{background:#fff0ef;color:#b83232;border:1px solid #f9d5d2}
+.cards{gap:14px;margin-bottom:16px}
+.card,.panel{border:1px solid #e5ebf3;border-radius:15px;box-shadow:0 3px 14px #172b4d08}
+.card{padding:19px;position:relative;overflow:hidden}
+.card:before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:#c8d8f5}
+.card:nth-child(2):before{background:#60a5fa}.card:nth-child(3):before{background:#f5b14c}.card:nth-child(4):before{background:#f07878}
+.klabel{font-size:11px;letter-spacing:.01em}
+.kvalue{font-size:28px;color:#14263d;line-height:1.2;margin:10px 0 5px}
+.panel{padding:19px;margin-bottom:14px}
+.panel h2{font-size:14px;font-weight:800;color:#1c2d43}
+.panelhead{align-items:center;margin-bottom:16px}
+.notice{border-radius:11px;background:#eff6ff;border-color:#d7e7ff;color:#28518d}
+.pill{padding:5px 8px;font-size:10px;letter-spacing:.015em}
+.tablewrap{border-color:#e5ebf3;border-radius:11px}
+table{font-size:12px}
+th{background:#f6f8fc;color:#65748a;font-size:9px;letter-spacing:.075em;padding:13px 14px}
+td{padding:13px 14px;color:#35445a}
+tbody tr:hover{background:#f8fbff}
+.fieldgrid{gap:14px}
+.field label{font-size:11px;color:#53657b}
+.field input,.field select,.search{border-color:#d7e0eb;border-radius:9px;min-height:40px;outline:none;transition:border-color .15s,box-shadow .15s}
+.field input:focus,.field select:focus,.search:focus{border-color:#78a5fa;box-shadow:0 0 0 3px #2563eb17}
+.formactions{gap:9px}
+.alert{border-radius:11px;border-color:#f5dfc6;background:#fffaf4}
+.login-screen{background:radial-gradient(ellipse at top left,#e4efff 0%,#f4f7fb 45%,#edf2f8 100%)}
+.login-card{border-radius:20px;padding:30px;box-shadow:0 22px 70px #17395e16;border-color:#e4eaf2}
+.login-card h1{font-size:25px;letter-spacing:-.03em;color:#14263d}
+.login-card .formactions button{min-height:42px}
+.footer{color:#8491a4}
+#modal{backdrop-filter:blur(3px)}
+#modal>div{border-radius:16px!important;box-shadow:0 22px 70px #0f172a2e!important}
+@media(max-width:1100px){.layout{grid-template-columns:225px minmax(0,1fr)}.main{padding:22px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.actions{justify-content:flex-end}}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.side{min-height:100vh;padding:18px 14px}.side-footer{margin-top:20px}.main{padding:16px}.top{align-items:flex-start}.nav button{min-height:43px}.brandlockup{padding-bottom:16px}}
+@media(max-width:520px){.main{padding:11px}.top h1{font-size:22px}.top .actions{width:100%;justify-content:flex-start}.sessionbar{width:100%;order:-1}.cards{gap:9px}.card{padding:13px}.kvalue{font-size:23px}.panel{padding:14px}.toolbar{align-items:stretch}.search{max-width:none}.login-card{padding:22px}.nav-label{padding-left:10px}}
+
 </style></head><body>
 <div id="loginScreen" class="login-screen"><div class="login-card"><h1>Login Gudang Pusat</h1><div class="muted">Masuk menggunakan NIK dan kata sandi yang telah didaftarkan Developer.</div><form id="loginForm"><div class="field"><label for="loginNik">NIK</label><input id="loginNik" type="text" autocomplete="username" autocapitalize="off" spellcheck="false" required placeholder="Masukkan NIK"></div><div class="field"><label for="loginPassword">Kata sandi</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Kata sandi"></div><div class="formactions"><button class="primary" id="loginButton" type="submit">Masuk ke Sistem</button><button class="soft" id="forgotPasswordButton" type="button">Lupa kata sandi?</button></div></form><div id="loginStatus" class="login-status"></div><div class="footer">Akses memerlukan koneksi internet dan akun yang sudah diaktifkan Developer.</div></div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<div id="navBackdrop" class="nav-backdrop" onclick="toggleNav(false)"></div><div class="layout"><aside class="side" id="sideNav"><div class="brand">GUDANG PUSAT</div><div class="sub">Monitoring Stok & Kapasitas</div>
-<nav class="nav">
-<button class="active" data-page="dashboard">▦ &nbsp; Dashboard</button><button data-page="transaksi">⇄ &nbsp; Transaksi</button><button data-page="persediaan">▤ &nbsp; Persediaan</button><button data-page="lokasi">▥ &nbsp; Lokasi & Kapasitas</button><button data-page="pengadaan">♧ &nbsp; Stok Menipis</button><button data-page="data">⇧ &nbsp; Import / Export</button><button data-page="developer">⚙ &nbsp; Developer</button>
-</nav></aside>
+<div id="navBackdrop" class="nav-backdrop" onclick="toggleNav(false)"></div><div class="layout"><aside class="side" id="sideNav"><div class="brandlockup"><div class="brandmark">W</div><div><div class="brand">GUDANG PUSAT</div><div class="sub">Warehouse Management</div></div></div>
+<nav class="nav" aria-label="Navigasi utama">
+<div class="nav-label">WORKSPACE</div>
+<button class="active" data-page="dashboard"><span class="navicon">▦</span><span>Dashboard</span></button>
+<button data-page="transaksi"><span class="navicon">⇄</span><span>Transaksi Stok</span></button>
+<button data-page="persediaan"><span class="navicon">▤</span><span>Master Persediaan</span></button>
+<button data-page="lokasi"><span class="navicon">▥</span><span>Lokasi & Kapasitas</span></button>
+<button data-page="pengadaan"><span class="navicon">♧</span><span>Stok Menipis</span></button>
+<div class="nav-label nav-label-secondary">DATA & PENGATURAN</div>
+<button data-page="data"><span class="navicon">⇧</span><span>Import / Export</span></button>
+<button data-page="profil"><span class="navicon">◉</span><span>Profil Saya</span></button>
+<button data-page="developer"><span class="navicon">⚙</span><span>Developer</span></button>
+</nav>
+<div class="side-footer"><span class="status-dot"></span><span>Sistem monitoring gudang</span><small>Internal workspace</small></div>
+</aside>
 <main class="main"><header class="top"><div><button class="hamburger" type="button" aria-label="Buka menu navigasi" onclick="toggleNav()">☰ Menu</button><div class="eyebrow">Sistem monitoring persediaan</div><h1 id="pageTitle">Dashboard Gudang</h1><div class="muted" id="today"></div></div><div class="actions"><button class="soft" onclick="go('profil')">Profil Saya</button><span class="sessionbar" id="sessionLabel"></span><button class="soft" onclick="exportCSV()">Ekspor CSV</button><button class="primary" onclick="go('transaksi')">+ Transaksi</button><button class="danger" onclick="logoutApp()">Keluar</button></div></header>
 <section class="section active" id="dashboard">
 <div class="notice"><b>Data awal dimuat dari master.xlsx.</b> Nilai stok kosong tetap ditandai “Perlu verifikasi”; stok negatif tidak otomatis diubah. Isi kapasitas gudang dan batas minimum sesuai data resmi.</div>
@@ -27,7 +103,7 @@
 <section class="section" id="transaksi">
 <div class="panel"><div class="panelhead"><div><h2>Catat transaksi stok</h2><div class="muted">Stok langsung diperbarui setelah transaksi disimpan.</div></div></div>
 <form id="txForm"><div class="fieldgrid"><div class="field"><label>Tanggal transaksi</label><input id="txDate" type="date" required></div><div class="field"><label>Jenis transaksi</label><select id="txType"><option value="MASUK">Barang masuk</option><option value="KELUAR">Barang keluar</option><option value="ADJUST">Penyesuaian stok</option></select></div><div class="field"><label>Item</label><select id="txItem" required></select></div><div class="field"><label>Jumlah (unit)</label><input id="txQty" type="number" min="1" step="1" required></div><div class="field"><label>No. dokumen</label><input id="txDoc" placeholder="PO / DO / SJ / referensi"></div><div class="field"><label>Petugas</label><input id="txUser" placeholder="Nama petugas"></div><div class="field"><label>Lokasi</label><input id="txLocation" placeholder="Rak / pallet / area"></div><div class="field"><label>Catatan</label><input id="txNote" placeholder="Keterangan tambahan"></div></div><div class="formactions"><button class="primary" type="submit">Simpan transaksi</button><button class="soft" type="reset">Kosongkan form</button></div></form></div>
-<div class="panel" style="margin-top:14px"><div class="panelhead"><div><h2>Riwayat transaksi</h2><div class="muted">Transaksi yang telah dicatat pada browser ini (belum tersinkron antarperangkat)</div></div><button class="soft" onclick="exportTransactions()">Ekspor transaksi</button></div><div class="tablewrap"><table><thead><tr><th>Tanggal</th><th>Jenis</th><th>Kode item</th><th>Nama item</th><th>Qty</th><th>Dokumen</th><th>Petugas</th></tr></thead><tbody id="txRows"></tbody></table></div></div>
+<div class="panel" style="margin-top:14px"><div class="panelhead"><div><h2>Riwayat transaksi</h2><div class="muted">Riwayat transaksi yang tersimpan dalam sistem dan mengikuti sinkronisasi saat online</div></div><button class="soft" onclick="exportTransactions()">Ekspor transaksi</button></div><div class="tablewrap"><table><thead><tr><th>Tanggal</th><th>Jenis</th><th>Kode item</th><th>Nama item</th><th>Qty</th><th>Dokumen</th><th>Petugas</th></tr></thead><tbody id="txRows"></tbody></table></div></div>
 </section>
 <section class="section" id="persediaan"><div class="toolbar"><div><h2 style="margin:0">Master persediaan</h2><div class="muted">Data awal dari master.xlsx</div></div><input class="search" id="searchItems" placeholder="Cari kode, nama, part number..." oninput="renderInventory()"><button class="primary" onclick="openNewItem()">+ Tambah item</button></div>
 <div class="tablewrap"><table><thead><tr><th>Item number</th><th>Nama item</th><th>Part number</th><th>Stok</th><th>Min. stok</th><th>Kategori</th><th>Lokasi</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="inventoryRows"></tbody></table></div>
@@ -88,7 +164,16 @@ async function toggleStaffActive(id,active){if(!currentProfile||currentProfile.r
 const fmt=n=>n===null||n===undefined||n===''?'—':Number(n).toLocaleString('id-ID',{maximumFractionDigits:0});
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const today=()=>new Date().toISOString().slice(0,10);
-function go(page){document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===page));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));document.getElementById('pageTitle').textContent=({dashboard:'Dashboard Gudang',transaksi:'Transaksi Masuk / Keluar',persediaan:'Master Persediaan',lokasi:'Lokasi & Kapasitas',pengadaan:'Stok Menipis & Pengadaan',data:'Import / Export Data',developer:'Developer & Data Petugas',profil:'Profil Saya'})[page];renderAll();toggleNav(false)}
+function go(page){
+const restricted=['data','developer'];
+if(!document.getElementById(page)){page='dashboard'}
+if(restricted.includes(page)&&(!currentProfile||currentProfile.role!=='developer')){alert('Menu ini hanya tersedia untuk akun Developer.');page='dashboard'}
+if(page==='profil'&&!currentProfile){page='dashboard'}
+document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===page));
+document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
+document.getElementById('pageTitle').textContent=({dashboard:'Dashboard Gudang',transaksi:'Transaksi Masuk / Keluar',persediaan:'Master Persediaan',lokasi:'Lokasi & Kapasitas',pengadaan:'Stok Menipis & Pengadaan',data:'Import / Export Data',developer:'Developer & Data Petugas',profil:'Profil Saya'})[page]||'Dashboard Gudang';
+renderAll();toggleNav(false)
+}
 document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
 function stockStatus(it){if(it.stock===null||it.stock===undefined||it.stock==='')return '<span class="pill warn">Perlu verifikasi</span>';if(Number(it.stock)<0)return '<span class="pill bad">Stok negatif</span>';if(it.min!==null&&it.min!==undefined&&it.min!==''&&Number(it.stock)<=Number(it.min))return '<span class="pill warn">Stok menipis</span>';return '<span class="pill good">Tercatat</span>'}
 function renderDashboard(){const known=state.items.filter(x=>x.stock!==null&&x.stock!==undefined&&x.stock!=='');const total=known.reduce((a,x)=>a+Number(x.stock||0),0);const review=state.items.filter(x=>x.stock===null||x.stock===undefined||x.stock===''||Number(x.stock)<0).length;const low=state.items.filter(x=>x.min!==null&&x.min!==undefined&&x.min!==''&&x.stock!==null&&x.stock!==undefined&&Number(x.stock)<=Number(x.min)).length;
