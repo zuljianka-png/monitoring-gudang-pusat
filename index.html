@@ -1,71 +1,287 @@
-<!doctype html>
-<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Monitoring Gudang Pusat</title>
-<style>
-:root{--navy:#15385b;--blue:#2563eb;--bg:#f3f6fb;--ink:#172033;--muted:#64748b;--line:#e2e8f0;--green:#15803d;--orange:#c2410c;--red:#b91c1c}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font:14px/1.45 "Segoe UI",Arial,sans-serif;color:var(--ink)}button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:8px;padding:10px 13px;font-weight:650}.primary{background:var(--blue);color:#fff}.soft{background:#e8eef8;color:var(--navy)}.danger{background:#fee2e2;color:var(--red)}.layout{display:grid;grid-template-columns:230px 1fr;min-height:100vh}.hamburger{display:none;background:#15385b;color:#fff;font-size:20px;padding:8px 12px}.nav-backdrop{display:none}.side{background:var(--navy);color:#fff;padding:22px 14px}.brand{font-weight:800;font-size:18px}.sub{font-size:12px;color:#cbd5e1;margin:4px 0 25px}.nav{display:grid;gap:6px}.nav button{background:transparent;color:#dbeafe;text-align:left}.nav button.active,.nav button:hover{background:#244d78;color:#fff}.main{padding:25px;min-width:0}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:20px}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);font-weight:800}.top h1{margin:5px 0;font-size:25px}.muted{color:var(--muted);font-size:12px}.actions{display:flex;gap:7px;flex-wrap:wrap}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:15px}.card,.panel{background:#fff;border:1px solid var(--line);border-radius:13px;padding:16px;box-shadow:0 2px 8px #0f172a08}.klabel{color:var(--muted);font-size:12px;font-weight:650}.kvalue{font-size:25px;font-weight:800;margin:7px 0 3px;letter-spacing:-.03em}.panelgrid{display:grid;grid-template-columns:1.15fr 1fr;gap:14px;margin-bottom:14px}.panel h2{font-size:16px;margin:0 0 4px}.panelhead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:14px}.pill{display:inline-block;font-size:11px;padding:4px 7px;border-radius:99px;background:#e0f2fe;color:#075985;font-weight:750}.warn{background:#ffedd5;color:#9a3412}.good{background:#dcfce7;color:#166534}.bad{background:#fee2e2;color:#991b1b}.barline{display:flex;align-items:center;gap:8px;margin:14px 0}.barname{width:86px;font-size:12px;color:#475569}.track{flex:1;background:#edf2f7;border-radius:99px;height:10px;overflow:hidden}.fill{height:100%;background:var(--blue)}.barvalue{width:85px;text-align:right;font-size:12px;font-weight:700}.chart{width:100%;height:220px;display:block}.section{display:none}.section.active{display:block}.toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:10px;background:#fff}table{border-collapse:collapse;width:100%;white-space:nowrap;font-size:12px}th,td{padding:11px 12px;border-bottom:1px solid #edf2f7;text-align:left}th{background:#f8fafc;color:#475569;text-transform:uppercase;font-size:10px;letter-spacing:.04em}tr:last-child td{border-bottom:0}.fieldgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:5px}.field label{font-size:12px;font-weight:700;color:#475569}.field input,.field select{padding:10px;border:1px solid #cbd5e1;border-radius:8px;background:white;min-width:0;width:100%}.formactions{display:flex;gap:8px;margin-top:15px;flex-wrap:wrap}.notice{padding:12px 14px;background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;border-radius:10px;font-size:12px;margin-bottom:14px}.alert{padding:12px;border-radius:10px;background:#fff7ed;border:1px solid #fed7aa;margin:9px 0}.alert strong{display:block;font-size:13px}.alert span{font-size:12px;color:#7c2d12}.search{max-width:300px;width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px}.footer{font-size:11px;color:var(--muted);line-height:1.55;margin-top:17px}.empty{text-align:center;padding:24px;color:var(--muted)}.right{text-align:right}.hidden{display:none!important}
-@media(max-width:900px){.layout{grid-template-columns:1fr}.side{padding:13px}.sub{margin:3px 0 12px}.hamburger{display:inline-block}.side{position:fixed;top:0;bottom:0;left:0;width:270px;z-index:1001;transform:translateX(-105%);transition:transform .2s;overflow:auto}.side.open{transform:translateX(0)}.nav{display:grid;overflow:visible}.nav button{white-space:normal}.nav-backdrop.show{display:block;position:fixed;inset:0;background:#0f172a88;z-index:1000}.main{padding:15px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.panelgrid{grid-template-columns:1fr}.fieldgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:520px){.top{flex-direction:column}.top h1{font-size:22px}.cards{gap:8px}.card{padding:12px}.kvalue{font-size:21px}.fieldgrid{grid-template-columns:1fr}.main{padding:10px}}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring Gudang Pusat</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SheetJS for Excel Export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
 
-.login-screen{position:fixed;inset:0;z-index:9999;background:#f3f6fb;display:flex;align-items:center;justify-content:center;padding:18px}.login-card{width:min(420px,100%);background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 12px 40px #0f172a18}.login-card h1{margin:0 0 5px;font-size:23px}.login-card .field{margin-top:12px}.login-card .field input{padding:12px;border:1px solid #cbd5e1;border-radius:8px;width:100%}.login-status{margin-top:12px;font-size:12px;color:#b91c1c;white-space:pre-wrap}.sessionbar{font-size:12px;color:#475569;align-self:center}
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-/* WMS UI refinement: presentation-only overrides, existing business logic preserved */
-:root{--navy:#122b49;--blue:#2463eb;--bg:#f4f7fb;--ink:#182538;--muted:#718096;--line:#e4eaf2;--green:#16804a;--orange:#c66a12;--red:#c03935}
-body{background:var(--bg);font-family:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--ink)}
-.layout{grid-template-columns:252px minmax(0,1fr)}
-.side{background:linear-gradient(180deg,#102844 0%,#17395e 100%);padding:24px 14px 16px;display:flex;flex-direction:column;min-height:100vh;box-shadow:5px 0 22px #1028440d}
-.brandlockup{display:flex;align-items:center;gap:11px;padding:2px 9px 22px;border-bottom:1px solid #ffffff1c;margin-bottom:19px}
-.brandmark{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,#60a5fa,#2563eb);color:#fff;font-weight:900;font-size:19px;box-shadow:0 6px 16px #02061738}
-.brand{font-size:14px;letter-spacing:.055em;font-weight:850;color:#fff}
-.sub{font-size:11px;color:#a9bfd8;margin:4px 0 0}
-.nav{gap:5px}
-.nav-label{padding:7px 11px 5px;font-size:9px;letter-spacing:.13em;font-weight:800;color:#8fa9c6}
-.nav-label-secondary{margin-top:13px}
-.nav button{display:flex;align-items:center;gap:12px;width:100%;min-height:42px;padding:10px 12px;border-radius:9px;color:#d2deec;font-size:12px;font-weight:650;transition:background .15s,color .15s,transform .15s}
-.nav button:hover{background:#ffffff12;color:#fff;transform:translateX(1px)}
-.nav button.active{background:linear-gradient(100deg,#2d6ce3,#2458b5);color:#fff;box-shadow:0 5px 13px #081a3045}
-.navicon{display:inline-grid;place-items:center;width:21px;flex:0 0 21px;font-size:17px;color:inherit}
-.side-footer{margin-top:auto;border-top:1px solid #ffffff1c;padding:17px 10px 0;color:#b8c9dd;font-size:10px;display:grid;grid-template-columns:8px 1fr;gap:2px 8px;align-items:center}
-.side-footer small{grid-column:2;color:#809bb8;font-size:9px}
-.status-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 4px #4ade8019}
-.main{padding:27px 30px;max-width:1800px;width:100%;margin:0 auto}
-.top{align-items:center;margin-bottom:24px}
-.top h1{font-size:27px;font-weight:800;letter-spacing:-.035em;color:#14263d}
-.eyebrow{font-size:10px;letter-spacing:.13em;color:#4776c5}
-.actions{align-items:center}
-button{border-radius:9px;transition:filter .15s,transform .15s,box-shadow .15s}
-button:hover{filter:brightness(.98)}
-button:active{transform:translateY(1px)}
-.primary{background:#2463eb;box-shadow:0 3px 8px #2463eb22}
-.soft{background:#edf2f8;color:#284562;border:1px solid #e1e8f1}
-.danger{background:#fff0ef;color:#b83232;border:1px solid #f9d5d2}
-.cards{gap:14px;margin-bottom:16px}
-.card,.panel{border:1px solid #e5ebf3;border-radius:15px;box-shadow:0 3px 14px #172b4d08}
-.card{padding:19px;position:relative;overflow:hidden}
-.card:before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:#c8d8f5}
-.card:nth-child(2):before{background:#60a5fa}.card:nth-child(3):before{background:#f5b14c}.card:nth-child(4):before{background:#f07878}
-.klabel{font-size:11px;letter-spacing:.01em}
-.kvalue{font-size:28px;color:#14263d;line-height:1.2;margin:10px 0 5px}
-.panel{padding:19px;margin-bottom:14px}
-.panel h2{font-size:14px;font-weight:800;color:#1c2d43}
-.panelhead{align-items:center;margin-bottom:16px}
-.notice{border-radius:11px;background:#eff6ff;border-color:#d7e7ff;color:#28518d}
-.pill{padding:5px 8px;font-size:10px;letter-spacing:.015em}
-.tablewrap{border-color:#e5ebf3;border-radius:11px}
-table{font-size:12px}
-th{background:#f6f8fc;color:#65748a;font-size:9px;letter-spacing:.075em;padding:13px 14px}
-td{padding:13px 14px;color:#35445a}
-tbody tr:hover{background:#f8fbff}
-.fieldgrid{gap:14px}
-.field label{font-size:11px;color:#53657b}
-.field input,.field select,.search{border-color:#d7e0eb;border-radius:9px;min-height:40px;outline:none;transition:border-color .15s,box-shadow .15s}
-.field input:focus,.field select:focus,.search:focus{border-color:#78a5fa;box-shadow:0 0 0 3px #2563eb17}
-.formactions{gap:9px}
-.alert{border-radius:11px;border-color:#f5dfc6;background:#fffaf4}
-.login-screen{background:radial-gradient(ellipse at top left,#e4efff 0%,#f4f7fb 45%,#edf2f8 100%)}
-.login-card{border-radius:20px;padding:30px;box-shadow:0 22px 70px #17395e16;border-color:#e4eaf2}
-.login-card h1{font-size:25px;letter-spacing:-.03em;color:#14263d}
-.login-card .formactions button{min-height:42px}
+    <!-- KUNCI APLIKASI SAAT PEMELIHARAAN: hanya Developer yang dapat melewati layar ini -->
+    <div id="maintenance-lock" class="hidden fixed inset-0 z-[60] bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-5" role="alertdialog" aria-modal="true" aria-labelledby="maintenance-lock-title">
+        <div class="w-full max-w-lg rounded-3xl bg-white shadow-2xl p-7 sm:p-10 text-center">
+            <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-100 text-amber-700 text-2xl">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+            </div>
+            <p class="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">Sistem Dikunci Sementara</p>
+            <h2 id="maintenance-lock-title" class="mt-3 text-2xl font-extrabold text-slate-900">Aplikasi Sedang Dipelihara</h2>
+            <p id="maintenance-lock-message" class="mt-3 text-sm leading-6 text-slate-600">Aplikasi belum dapat digunakan selama proses pemeliharaan.</p>
+            <p id="maintenance-lock-schedule" class="hidden mt-4 rounded-xl bg-slate-100 px-4 py-3 text-xs font-semibold text-slate-700"></p>
+            <div class="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-900">Mohon tunggu sampai Developer menyelesaikan pemeliharaan dan membuka kembali akses aplikasi.</div>
+            <button type="button" onclick="logout()" class="mt-6 rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-700">Keluar / Ganti Akun Developer</button>
+        </div>
+    </div>
+
+    <!-- AUTH OVERLAY / LOGIN MODAL -->
+    <div id="auth-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 border border-slate-100">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl font-bold shadow-sm">
+                    <i class="fa-solid font-bold fa-warehouse"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800">Gudang Pusat</h2>
+                <p class="text-sm text-slate-500 mt-1">Sistem Informasi Monitoring & Persediaan</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Username / NIP</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user absolute left-3 top-3.5 text-slate-400"></i>
+                        <input type="text" id="login-username" required class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition" placeholder="Masukkan username">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Kata Sandi</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-3 top-3.5 text-slate-400"></i>
+                        <input type="password" id="login-password" required class="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition" placeholder="••••••••">
+                        <!-- Fitur 1: Toggle Password Visibility -->
+                        <button type="button" onclick="togglePasswordVisibility('login-password', 'login-eye-icon')" class="absolute right-3 top-3 text-slate-400 hover:text-slate-600 transition">
+                            <i id="login-eye-icon" class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                    <label class="flex items-center text-slate-600 cursor-pointer">
+                        <input type="checkbox" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 mr-2"> Ingat saya
+                    </label>
+                    <button type="button" onclick="switchAuthTab('reset')" class="text-blue-600 hover:underline font-semibold">Lupa sandi?</button>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-lg shadow-blue-500/20 transition duration-200">
+                    Masuk ke Sistem
+                </button>
+            </form>
+
+            <!-- Reset Password Form -->
+            <form id="form-reset" onsubmit="handleResetPassword(event)" class="space-y-4 hidden">
+                <p class="text-xs text-slate-500 mb-2">Masukkan username dan kata sandi baru Anda untuk memperbarui akses.</p>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Username</label>
+                    <input type="text" id="reset-username" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Kata Sandi Baru</label>
+                    <div class="relative">
+                        <input type="password" id="reset-password" required class="w-full pl-4 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="••••••••">
+                        <button type="button" onclick="togglePasswordVisibility('reset-password', 'reset-eye-icon')" class="absolute right-3 top-3 text-slate-400 hover:text-slate-600">
+                            <i id="reset-eye-icon" class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="switchAuthTab('login')" class="w-1/2 bg-slate-100 text-slate-600 font-semibold py-2.5 rounded-xl hover:bg-slate-200 transition">Batal</button>
+                    <button type="submit" class="w-1/2 bg-blue-600 text-white font-semibold py-2.5 rounded-xl hover:bg-blue-700 transition">Simpan Sandi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div class="flex flex-1 min-h-screen overflow-hidden">
+        
+        <!-- SIDEBAR NAVIGATION -->
+        <div id="sidebar-backdrop" onclick="closeSidebar()" class="fixed inset-0 bg-slate-950/50 z-30 hidden md:hidden"></div>
+        <aside id="app-sidebar" class="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0 shadow-xl border-r border-slate-800 md:static fixed inset-y-0 left-0 z-40 -translate-x-full md:translate-x-0 transition-transform duration-200">
+            <div class="p-6 border-b border-slate-800 flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center font-bold text-lg shadow-md shadow-blue-500/30">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                </div>
+                <div>
+                    <h1 class="text-white font-bold tracking-wide text-sm leading-tight">GUDANG PUSAT</h1>
+                    <span class="text-[10px] text-blue-400 font-medium tracking-wider uppercase">Monitoring System</span>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto custom-scrollbar">
+                <button onclick="switchMenu('dashboard')" id="nav-dashboard" class="nav-btn active flex items-center w-full gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-white bg-blue-600/90 shadow-md">
+                    <i class="fa-solid fa-chart-pie w-5"></i> Dashboard
+                </button>
+                <button onclick="switchMenu('persediaan')" id="nav-persediaan" class="nav-btn flex items-center w-full gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                    <i class="fa-solid fa-boxes-packing w-5"></i> Master Persediaan
+                </button>
+                <button onclick="switchMenu('transaksi')" id="nav-transaksi" class="nav-btn flex items-center w-full gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                    <i class="fa-solid fa-right-left w-5"></i> Input Transaksi
+                </button>
+                <button onclick="switchMenu('riwayat')" id="nav-riwayat" class="nav-btn flex items-center w-full gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                    <i class="fa-solid fa-clock-rotate-left w-5"></i> Semua Riwayat
+                </button>
+                <!-- Fitur 3: Menu Riwayat Cabang Baru -->
+                <button onclick="switchMenu('riwayat-cabang')" id="nav-riwayat-cabang" class="nav-btn flex items-center w-full gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                    <i class="fa-solid fa-code-branch w-5"></i> Riwayat Cabang
+                </button>
+                <button onclick="switchMenu('karyawan')" id="nav-karyawan" class="nav-btn flex items-center w-full gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                    <i class="fa-solid fa-users w-5"></i> Kelola Karyawan
+                </button>
+                <button onclick="switchMenu('developer')" id="nav-developer" class="nav-btn hidden flex items-center w-full gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                    <i class="fa-solid fa-screwdriver-wrench w-5"></i> Developer
+                </button>
+                <button onclick="switchMenu('profil')" id="nav-profil" class="nav-btn flex items-center w-full gap-3 px-4 py-3 rounded-xl text-sm font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white">
+                    <i class="fa-solid fa-user-gear w-5"></i> Profil Saya
+                </button>
+            </nav>
+
+            <!-- User Info Footer -->
+            <div class="p-4 border-t border-slate-800 bg-slate-950/50">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 bg-slate-700 text-white rounded-lg flex items-center justify-center font-bold text-xs" id="user-avatar">
+                            AD
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="text-xs font-semibold text-white truncate" id="user-display-name">Admin Gudang</p>
+                            <p class="text-[10px] text-slate-400 truncate" id="user-role">Administrator</p>
+                        </div>
+                    </div>
+                    <button onclick="logout()" title="Keluar" class="text-slate-400 hover:text-red-400 transition p-1.5 rounded-lg hover:bg-slate-800">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT CONTAINER -->
+        <main class="flex-1 flex flex-col overflow-y-auto custom-scrollbar bg-slate-50">
+            
+            <!-- Top Header -->
+            <header class="bg-white border-b border-slate-200/80 px-4 md:px-8 py-4 flex items-center justify-between sticky top-0 z-20 shadow-sm">
+                <div class="flex items-center gap-3">
+                    <button id="hamburger-btn" type="button" onclick="toggleSidebar()" aria-label="Buka navigasi" class="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100"><i class="fa-solid fa-bars text-lg"></i></button>
+                    <div>
+                    <h2 id="page-title" class="text-xl font-bold text-slate-800">Dashboard Utama</h2>
+                    <p id="page-subtitle" class="text-xs text-slate-500">Ringkasan status stok & aktivitas gudang pusat</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span> Systems Online
+                    </span>
+                    <div class="text-xs text-slate-500 border-l border-slate-200 pl-3 hidden sm:block">
+                        <i class="fa-regular fa-calendar mr-1"></i> <span id="current-date-display">--/--/----</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Pengumuman pemeliharaan aktif (kontrolnya hanya tersedia di menu Developer) -->
+            <div id="maintenance-announcement" class="hidden mx-4 mt-4 md:mx-8 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl p-4">
+                <div class="flex items-start gap-3">
+                    <i class="fa-solid fa-screwdriver-wrench mt-1 text-amber-600"></i>
+                    <div>
+                        <p class="font-bold text-sm" id="maintenance-announcement-title">Pemberitahuan Pemeliharaan</p>
+                        <p class="text-sm mt-1" id="maintenance-announcement-message"></p>
+                        <p class="text-xs mt-2" id="maintenance-announcement-schedule"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Views Container -->
+            <div class="p-4 md:p-8 space-y-6 flex-1">
+                
+                <!-- 1. DASHBOARD VIEW -->
+                <section id="view-dashboard" class="space-y-6">
+                    <!-- Stat Cards Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/70 shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Jenis Item</p>
+                                <h3 class="text-2xl font-extrabold text-slate-800 mt-1" id="stat-total-items">0</h3>
+                                <p class="text-[11px] text-slate-400 mt-1">Item terdaftar di katalog</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/70 shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Kuantitas Stok</p>
+                                <h3 class="text-2xl font-extrabold text-slate-800 mt-1" id="stat-total-stock">0</h3>
+                                <p class="text-[11px] text-slate-400 mt-1">Unit fisik dalam gudang</p>
+                            </div>
+                            <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-cubes"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/70 shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Stok Menipis / Habis</p>
+                                <h3 class="text-2xl font-extrabold text-amber-600 mt-1" id="stat-low-stock">0</h3>
+                                <p class="text-[11px] text-amber-600/80 font-medium mt-1">Membutuhkan re-stock</p>
+                            </div>
+                            <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/70 shadow-sm flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Log Transaksi</p>
+                                <h3 class="text-2xl font-extrabold text-indigo-600 mt-1" id="stat-total-tx">0</h3>
+                                <p class="text-[11px] text-slate-400 mt-1">Riwayat mutasi tercatat</p>
+                            </div>
+                            <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-list-check"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Overview Tables -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Transaksi Terakhir -->
+                        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-card .formactions button{min-height:42px}
 .footer{color:#8491a4}
 #modal{backdrop-filter:blur(3px)}
 #modal>div{border-radius:16px!important;box-shadow:0 22px 70px #0f172a2e!important}
