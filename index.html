@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Monitoring Gudang Pusat</title>
+<title>Persediaan Gudang</title>
 <style>
 :root{--navy:#15385b;--blue:#2563eb;--bg:#f3f6fb;--ink:#172033;--muted:#64748b;--line:#e2e8f0;--green:#15803d;--orange:#c2410c;--red:#b91c1c}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);font:14px/1.45 "Segoe UI",Arial,sans-serif;color:var(--ink)}button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:8px;padding:10px 13px;font-weight:650}.primary{background:var(--blue);color:#fff}.soft{background:#e8eef8;color:var(--navy)}.danger{background:#fee2e2;color:var(--red)}.layout{display:grid;grid-template-columns:230px 1fr;min-height:100vh}.hamburger{display:none;background:#15385b;color:#fff;font-size:20px;padding:8px 12px}.nav-backdrop{display:none}.side{background:var(--navy);color:#fff;padding:22px 14px}.brand{font-weight:800;font-size:18px}.sub{font-size:12px;color:#cbd5e1;margin:4px 0 25px}.nav{display:grid;gap:6px}.nav button{background:transparent;color:#dbeafe;text-align:left}.nav button.active,.nav button:hover{background:#244d78;color:#fff}.main{padding:25px;min-width:0}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:20px}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);font-weight:800}.top h1{margin:5px 0;font-size:25px}.muted{color:var(--muted);font-size:12px}.actions{display:flex;gap:7px;flex-wrap:wrap}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:15px}.card,.panel{background:#fff;border:1px solid var(--line);border-radius:13px;padding:16px;box-shadow:0 2px 8px #0f172a08}.klabel{color:var(--muted);font-size:12px;font-weight:650}.kvalue{font-size:25px;font-weight:800;margin:7px 0 3px;letter-spacing:-.03em}.panelgrid{display:grid;grid-template-columns:1.15fr 1fr;gap:14px;margin-bottom:14px}.panel h2{font-size:16px;margin:0 0 4px}.panelhead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:14px}.pill{display:inline-block;font-size:11px;padding:4px 7px;border-radius:99px;background:#e0f2fe;color:#075985;font-weight:750}.warn{background:#ffedd5;color:#9a3412}.good{background:#dcfce7;color:#166534}.bad{background:#fee2e2;color:#991b1b}.barline{display:flex;align-items:center;gap:8px;margin:14px 0}.barname{width:86px;font-size:12px;color:#475569}.track{flex:1;background:#edf2f7;border-radius:99px;height:10px;overflow:hidden}.fill{height:100%;background:var(--blue)}.barvalue{width:85px;text-align:right;font-size:12px;font-weight:700}.chart{width:100%;height:220px;display:block}.section{display:none}.section.active{display:block}.toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:10px;background:#fff}table{border-collapse:collapse;width:100%;white-space:nowrap;font-size:12px}th,td{padding:11px 12px;border-bottom:1px solid #edf2f7;text-align:left}th{background:#f8fafc;color:#475569;text-transform:uppercase;font-size:10px;letter-spacing:.04em}tr:last-child td{border-bottom:0}.fieldgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:5px}.field label{font-size:12px;font-weight:700;color:#475569}.field input,.field select{padding:10px;border:1px solid #cbd5e1;border-radius:8px;background:white;min-width:0;width:100%}.formactions{display:flex;gap:8px;margin-top:15px;flex-wrap:wrap}.notice{padding:12px 14px;background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;border-radius:10px;font-size:12px;margin-bottom:14px}.alert{padding:12px;border-radius:10px;background:#fff7ed;border:1px solid #fed7aa;margin:9px 0}.alert strong{display:block;font-size:13px}.alert span{font-size:12px;color:#7c2d12}.search{max-width:300px;width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px}.footer{font-size:11px;color:var(--muted);line-height:1.55;margin-top:17px}.empty{text-align:center;padding:24px;color:var(--muted)}.right{text-align:right}.hidden{display:none!important}
@@ -9,7 +9,7 @@
 
 .login-screen{position:fixed;inset:0;z-index:9999;background:#f3f6fb;display:flex;align-items:center;justify-content:center;padding:18px}.login-card{width:min(420px,100%);background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 12px 40px #0f172a18}.login-card h1{margin:0 0 5px;font-size:23px}.login-card .field{margin-top:12px}.login-card .field input{padding:12px;border:1px solid #cbd5e1;border-radius:8px;width:100%}.login-status{margin-top:12px;font-size:12px;color:#b91c1c;white-space:pre-wrap}.sessionbar{font-size:12px;color:#475569;align-self:center}
 
-/* WMS UI refinement: presentation-only overrides, existing business logic preserved */
+/* Presentation refinement: existing business logic preserved */
 :root{--navy:#122b49;--blue:#2463eb;--bg:#f4f7fb;--ink:#182538;--muted:#718096;--line:#e4eaf2;--green:#16804a;--orange:#c66a12;--red:#c03935}
 body{background:var(--bg);font-family:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--ink)}
 .layout{grid-template-columns:252px minmax(0,1fr)}
@@ -73,26 +73,99 @@ tbody tr:hover{background:#f8fbff}
 @media(max-width:900px){.layout{grid-template-columns:1fr}.side{min-height:100vh;padding:18px 14px}.side-footer{margin-top:20px}.main{padding:16px}.top{align-items:flex-start}.nav button{min-height:43px}.brandlockup{padding-bottom:16px}}
 @media(max-width:520px){.main{padding:11px}.top h1{font-size:22px}.top .actions{width:100%;justify-content:flex-start}.sessionbar{width:100%;order:-1}.cards{gap:9px}.card{padding:13px}.kvalue{font-size:23px}.panel{padding:14px}.toolbar{align-items:stretch}.search{max-width:none}.login-card{padding:22px}.nav-label{padding-left:10px}}
 
+
+/* Mobile app shell: navigation and stock/business logic remain intact. */
+:root{--navy:#102a43;--blue:#2864e8;--bg:#f5f7fb;--ink:#15263d;--line:#e5eaf2}
+body{background:#f5f7fb;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.side{padding:18px 12px}
+.nav{gap:6px}
+.nav button{min-height:46px;font-size:13px;border-radius:12px}
+.main{max-width:none;padding:24px clamp(14px,2.5vw,32px) 32px}
+.top{margin-bottom:18px}
+.top h1{font-size:clamp(22px,2vw,29px)}
+.cards{gap:11px}
+.card,.panel{border-radius:17px}
+.mobile-tabbar{display:none}
+.login-screen:not(.hidden) ~ .mobile-tabbar{display:none!important}
+@media(max-width:900px){
+  body{padding-bottom:calc(74px + env(safe-area-inset-bottom));background:#f4f6fb}
+  .layout{display:block;min-height:100dvh}
+  .side{width:min(82vw,320px);padding:24px 15px;top:0;bottom:0;min-height:100dvh;border-radius:0 22px 22px 0;box-shadow:16px 0 44px #0b1b3026}
+  .side .nav{padding-top:12px}
+  .side .nav button{min-height:48px;font-size:14px}
+  .main{padding:16px 14px 26px;max-width:none}
+  .top{display:flex;flex-direction:row;align-items:center;gap:12px;margin:2px 0 18px}
+  .top>div:first-child{min-width:0;display:flex;align-items:center;gap:10px}
+  .top h1{font-size:22px;line-height:1.2;margin:0;letter-spacing:-.04em}
+  .top #today{display:none}
+  .hamburger{display:inline-grid;place-items:center;flex:0 0 42px;width:42px;height:42px;padding:0;border-radius:14px;background:#e7eefb;color:#17365a;font-size:19px}
+  .actions{gap:6px;justify-content:flex-end}
+  .actions .sessionbar{display:none}
+  .actions button{font-size:11px;padding:9px 10px}
+  .actions button[onclick="go('profil')"],.actions button[onclick="exportCSV()"]{display:none}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px}
+  .card{padding:14px;min-width:0}
+  .klabel{font-size:10px;line-height:1.35}
+  .kvalue{font-size:24px;margin:8px 0 3px}
+  .panelgrid{grid-template-columns:1fr;gap:11px}
+  .panel{padding:15px;margin-bottom:11px}
+  .panel h2{font-size:14px}
+  .panelhead{gap:8px;align-items:flex-start}
+  .panelhead .muted{line-height:1.45}
+  .chart{height:190px}
+  .toolbar{align-items:stretch;gap:9px}
+  .toolbar .search{max-width:none;width:100%}
+  .toolbar>div{display:flex;flex-wrap:wrap;gap:7px}
+  .fieldgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .fieldgrid .field[style*="grid-column:1/-1"]{grid-column:1/-1}
+  .field input,.field select,.search{min-height:44px;font-size:14px}
+  .formactions{gap:8px}
+  .formactions button{flex:1;min-height:42px}
+  .tablewrap{border-radius:12px;max-width:100%}
+  table{font-size:11px}
+  th,td{padding:10px 11px}
+  .mobile-tabbar{position:fixed;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;left:0;right:0;bottom:0;z-index:900;background:rgba(255,255,255,.96);backdrop-filter:blur(18px);border-top:1px solid #e2e8f0;padding:7px 6px calc(7px + env(safe-area-inset-bottom));box-shadow:0 -7px 24px #14243a0c}
+  .mobile-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;padding:5px 2px;border-radius:12px;background:transparent;color:#8290a5;font-size:10px;font-weight:700;line-height:1.2}
+  .mobile-tab .tab-icon{font-size:20px;line-height:1.1;font-weight:600}
+  .mobile-tab.active{color:#245fe0;background:#eef4ff}
+  .nav-backdrop{z-index:1000}
+  #modal{align-items:flex-end!important;padding:0!important}
+  #modal>.panel{width:100%!important;max-height:90dvh!important;border-radius:22px 22px 0 0;padding:18px 15px calc(20px + env(safe-area-inset-bottom));overflow:auto}
+  #maintenanceLock>div{padding:24px 18px!important;border-radius:22px!important}
+  .login-card{padding:24px 20px;border-radius:22px}
+}
+@media(max-width:430px){
+  .main{padding-left:11px;padding-right:11px}
+  .top h1{font-size:20px}
+  .actions button{padding:8px 9px}
+  .fieldgrid{grid-template-columns:1fr}
+  .fieldgrid .field[style*="grid-column:1/-1"]{grid-column:auto}
+  .card{padding:12px}
+  .kvalue{font-size:22px}
+  .panel{padding:13px}
+}
+@media(min-width:901px){.mobile-tabbar{display:none!important}}
+
 </style></head><body>
-<div id="loginScreen" class="login-screen"><div class="login-card"><h1>Login Gudang Pusat</h1><div class="muted">Masuk menggunakan NIK dan kata sandi yang telah didaftarkan Developer.</div><form id="loginForm"><div class="field"><label for="loginNik">NIK</label><input id="loginNik" type="text" autocomplete="username" autocapitalize="off" spellcheck="false" required placeholder="Masukkan NIK"></div><div class="field"><label for="loginPassword">Kata sandi</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Kata sandi"></div><div class="formactions"><button class="primary" id="loginButton" type="submit">Masuk ke Sistem</button><button class="soft" id="forgotPasswordButton" type="button">Lupa kata sandi?</button></div></form><div id="loginStatus" class="login-status"></div><div class="footer">Akses memerlukan koneksi internet dan akun yang sudah diaktifkan Developer.</div></div></div>
+<div id="loginScreen" class="login-screen"><div class="login-card"><h1>Masuk</h1><div class="muted">Gunakan NIK dan kata sandi akun kamu.</div><form id="loginForm"><div class="field"><label for="loginNik">NIK</label><input id="loginNik" type="text" autocomplete="username" autocapitalize="off" spellcheck="false" required placeholder="Masukkan NIK"></div><div class="field"><label for="loginPassword">Kata sandi</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Kata sandi"></div><div class="formactions"><button class="primary" id="loginButton" type="submit">Masuk</button><button class="soft" id="forgotPasswordButton" type="button">Lupa kata sandi?</button></div></form><div id="loginStatus" class="login-status"></div><div class="footer">Akses memerlukan koneksi internet dan akun yang sudah diaktifkan Developer.</div></div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<div id="navBackdrop" class="nav-backdrop" onclick="toggleNav(false)"></div><div class="layout"><aside class="side" id="sideNav"><div class="brandlockup"><div class="brandmark">W</div><div><div class="brand">GUDANG PUSAT</div><div class="sub">Warehouse Management</div></div></div>
+<div id="navBackdrop" class="nav-backdrop" onclick="toggleNav(false)"></div><div class="layout"><aside class="side" id="sideNav">
 <nav class="nav" aria-label="Navigasi utama">
-<div class="nav-label">WORKSPACE</div>
+
 <button class="active" data-page="dashboard"><span class="navicon">▦</span><span>Dashboard</span></button>
 <button data-page="transaksi"><span class="navicon">⇄</span><span>Transaksi Stok</span></button>
 <button data-page="persediaan"><span class="navicon">▤</span><span>Master Persediaan</span></button>
 <button data-page="lokasi"><span class="navicon">▥</span><span>Lokasi & Kapasitas</span></button>
 <button data-page="pengadaan"><span class="navicon">♧</span><span>Stok Menipis</span></button>
-<div class="nav-label nav-label-secondary">DATA & PENGATURAN</div>
+
 <button data-page="data"><span class="navicon">⇧</span><span>Import / Export</span></button>
 <button data-page="profil"><span class="navicon">◉</span><span>Profil Saya</span></button>
 <button data-page="developer"><span class="navicon">⚙</span><span>Developer</span></button>
 </nav>
-<div class="side-footer"><span class="status-dot"></span><span>Sistem monitoring gudang</span><small>Internal workspace</small></div>
+
 </aside>
-<main class="main"><header class="top"><div><button class="hamburger" type="button" aria-label="Buka menu navigasi" onclick="toggleNav()">☰ Menu</button><div class="eyebrow">Sistem monitoring persediaan</div><h1 id="pageTitle">Dashboard Gudang</h1><div class="muted" id="today"></div></div><div class="actions"><button class="soft" onclick="go('profil')">Profil Saya</button><span class="sessionbar" id="sessionLabel"></span><button class="soft" onclick="exportCSV()">Ekspor CSV</button><button class="primary" onclick="go('transaksi')">+ Transaksi</button><button class="danger" onclick="logoutApp()">Keluar</button></div></header>
+<main class="main"><header class="top"><div><button class="hamburger" type="button" aria-label="Buka menu navigasi" onclick="toggleNav()">☰</button><h1 id="pageTitle">Ringkasan</h1><div class="muted" id="today"></div></div><div class="actions"><button class="soft" onclick="go('profil')">Profil Saya</button><span class="sessionbar" id="sessionLabel"></span><button class="soft" onclick="exportCSV()">Ekspor CSV</button><button class="primary" onclick="go('transaksi')">+ Transaksi</button><button class="danger" onclick="logoutApp()">Keluar</button></div></header>
 <section class="section active" id="dashboard">
 <div class="notice"><b>Data awal dimuat dari master.xlsx.</b> Nilai stok kosong tetap ditandai “Perlu verifikasi”; stok negatif tidak otomatis diubah. Isi kapasitas gudang dan batas minimum sesuai data resmi.</div>
 <div class="cards"><div class="card"><div class="klabel">Jumlah item terdaftar</div><div class="kvalue" id="countItems">—</div><div class="muted">Kode item unik dalam master</div></div><div class="card"><div class="klabel">Total stok tercatat</div><div class="kvalue" id="totalStock">—</div><div class="muted">Mengabaikan nilai kosong</div></div><div class="card"><div class="klabel">Stok perlu diverifikasi</div><div class="kvalue" id="reviewCount">—</div><div class="muted">Kosong atau negatif</div></div><div class="card"><div class="klabel">Item stok menipis</div><div class="kvalue" id="lowCount">—</div><div class="muted">Berdasarkan batas minimum yang diisi</div></div></div>
@@ -123,8 +196,15 @@ tbody tr:hover{background:#f8fbff}
 <div class="panel" style="margin-bottom:14px;border:1px solid #cbd5e1"><div class="panelhead"><div><h2>Backup & Pemulihan Data Bersama</h2><div class="muted">Backup mengambil data dari Supabase, sehingga dapat dipakai untuk pemulihan di perangkat lain.</div></div></div><div class="field"><label>File backup JSON untuk dipulihkan</label><input type="file" id="developerBackupFile" accept=".json,application/json"></div><div class="formactions"><button class="primary" type="button" onclick="exportServerBackup()">Unduh backup server</button><button class="danger" type="button" onclick="importServerBackup()">Pulihkan backup ke server</button></div><div id="backupAdminMessage" class="muted" style="margin-top:8px">Buat backup sebelum pemulihan. Pemulihan mengganti data bersama yang sedang aktif.</div></div>
 <div class="formactions"><a href="https://supabase.com/dashboard" target="_blank" rel="noopener" style="text-decoration:none"><button type="button" class="primary">Buka Supabase</button></a><a href="https://github.com" target="_blank" rel="noopener" style="text-decoration:none"><button type="button" class="soft">Buka GitHub</button></a></div>
 </div></section>
-<div class="footer">Prototype awal untuk evaluasi alur kerja. Periksa dan cocokkan master dengan stok fisik sebelum dipakai untuk keputusan operasional resmi.</div>
+<div class="footer">Pastikan data stok sesuai dengan hasil pemeriksaan fisik sebelum digunakan untuk operasional.</div>
 </main></div>
+<nav class="mobile-tabbar" aria-label="Navigasi bawah">
+  <button type="button" data-page="dashboard" class="mobile-tab active"><span class="tab-icon">⌂</span><span>Beranda</span></button>
+  <button type="button" data-page="persediaan" class="mobile-tab"><span class="tab-icon">▤</span><span>Stok</span></button>
+  <button type="button" data-page="transaksi" class="mobile-tab"><span class="tab-icon">⇄</span><span>Transaksi</span></button>
+  <button type="button" data-page="pengadaan" class="mobile-tab"><span class="tab-icon">♧</span><span>Stok tipis</span></button>
+  <button type="button" class="mobile-tab" onclick="toggleNav(true)"><span class="tab-icon">☰</span><span>Lainnya</span></button>
+</nav>
 <div id="maintenanceLock" class="hidden" role="alertdialog" aria-modal="true" style="position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,.96);color:#0f172a;display:none;align-items:center;justify-content:center;padding:20px"><div style="width:min(520px,100%);background:#fff;border-radius:24px;padding:30px;text-align:center;box-shadow:0 24px 80px #0005"><div style="font-size:42px;margin-bottom:12px">🛠️</div><h2 id="maintenanceLockTitle" style="font-size:24px;font-weight:800;margin:0 0 10px">Aplikasi sedang dipelihara</h2><p id="maintenanceLockMessage" style="color:#475569;line-height:1.65;margin:0 0 12px">Akses karyawan sementara dikunci oleh Developer.</p><p id="maintenanceLockSchedule" style="color:#64748b;font-size:13px;margin:0">Silakan coba kembali nanti.</p><div style="margin-top:22px;font-size:12px;color:#94a3b8">Data tetap tersimpan di server.</div></div></div>
 <div id="modal" class="hidden" style="position:fixed;inset:0;background:#0f172a88;display:none;align-items:center;justify-content:center;padding:16px;z-index:5"><div class="panel" style="width:min(650px,100%);max-height:90vh;overflow:auto"><div class="panelhead"><h2 id="modalTitle">Edit item</h2><button class="soft" onclick="closeModal()">Tutup</button></div><form id="itemForm"><input id="editOriginal" type="hidden"><div class="fieldgrid"><div class="field"><label>Item number</label><input id="editNo" required></div><div class="field"><label>Nama item</label><input id="editName" required></div><div class="field"><label>Part number</label><input id="editPart"></div><div class="field"><label>Stok saat ini</label><input id="editStock" type="number" step="1"></div><div class="field"><label>Batas minimum stok</label><input id="editMin" type="number" min="0" step="1" placeholder="Belum diatur"></div><div class="field"><label>Kategori</label><input id="editCat" placeholder="Contoh: Sparepart / ATK"></div><div class="field"><label>Lokasi rak/pallet</label><input id="editLoc" placeholder="Contoh: GD-LR/RK-02/P-04"></div></div><div class="formactions"><button class="primary" type="submit">Simpan item</button></div></form></div></div>
 <script>
@@ -183,7 +263,7 @@ if(!document.getElementById(page)){page='dashboard'}
 if(restricted.includes(page)&&(!currentProfile||!isDeveloper())){alert('Menu ini hanya tersedia untuk akun Developer.');page='dashboard'}
 if(page==='profil'&&!currentProfile){page='dashboard'}
 document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===page));
-document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
+document.querySelectorAll('.nav button, .mobile-tabbar button[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
 document.getElementById('pageTitle').textContent=({dashboard:'Dashboard Gudang',transaksi:'Transaksi Masuk / Keluar',persediaan:'Master Persediaan',lokasi:'Lokasi & Kapasitas',pengadaan:'Stok Menipis & Pengadaan',data:'Import / Export Data',developer:'Developer & Data Petugas',profil:'Profil Saya'})[page]||'Dashboard Gudang';
 renderAll();toggleNav(false)
 }
