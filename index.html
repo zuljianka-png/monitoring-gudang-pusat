@@ -71,8 +71,6 @@
     .formactions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
     .notice { padding: 14px 16px; background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; border-radius: 12px; font-size: 13px; margin-bottom: 18px; }
     .search { max-width: 320px; width: 100%; }
-    .footer { font-size: 12px; color: var(--text-muted); margin-top: 24px; text-align: center; }
-    .empty { text-align: center; padding: 32px; color: var(--text-muted); }
     .hidden { display: none !important; }
     .section { display: none; }
     .section.active { display: block !important; }
@@ -118,7 +116,7 @@
         <label for="loginNik">NIK / Kode Developer</label>
         <input id="loginNik" type="text" autocomplete="username" required placeholder="Contoh: P3255">
       </div>
-      <div class="field">
+      <div class="field" style="margin-top: 10px;">
         <label for="loginPassword">Kata Sandi</label>
         <input id="loginPassword" type="password" autocomplete="current-password" required value="123456x" placeholder="Password default 123456x">
       </div>
@@ -210,7 +208,7 @@
 
     <!-- SECTION PERSEDIAAN -->
     <section class="section" id="persediaan">
-      <div class="toolbar" style="display:flex; justify-content:space-between; margin-bottom:15px;">
+      <div class="toolbar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
         <h2>Master Persediaan</h2>
         <input class="search" id="searchItems" placeholder="Cari item..." oninput="renderInventory()">
       </div>
@@ -224,12 +222,12 @@
 
     <!-- SECTION LOKASI -->
     <section class="section" id="lokasi">
-      <div class="panel"><h2>Lokasi & Kapasitas Rak</h2><div id="locationRows"></div></div>
+      <div class="panel"><h2>Lokasi & Kapasitas Rak</h2><div id="locationRows" style="margin-top:15px"></div></div>
     </section>
 
     <!-- SECTION PENGADAAN -->
     <section class="section" id="pengadaan">
-      <div class="panel"><h2>Stok Menipis</h2><div id="reorderList"></div></div>
+      <div class="panel"><h2>Stok Menipis</h2><div id="reorderList" style="margin-top:15px"></div></div>
     </section>
 
     <!-- SECTION DATA -->
@@ -311,25 +309,30 @@ const loginEmailForNik = nik => `${String(nik).trim()}@monitoringgudang.internal
 
 const SEED = [
   {"itemNo":"9080092833","name":"Oli Mesin","partNo":"FC20020W50SJCF","stock":19,"min":5,"location":"A-01","category":"Oli"},
-  {"itemNo":"9080092835","name":"Aki / Mono","partNo":"31500KPH881","stock":5,"min":2,"location":"B-02","category":"Sparepart"}
+  {"itemNo":"9080092835","name":"Aki / Mono","partNo":"31500KPH881","stock":5,"min":2,"location":"B-02","category":"Sparepart"},
+  {"itemNo":"9080092838","name":"Kampas Rem","partNo":"06455KREK01","stock":1,"min":4,"location":"C-03","category":"Sparepart"}
 ];
 let state = { items: SEED, transactions: [] };
 
 async function initSession() {
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  if (session && session.user) {
-    const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', session.user.id).single();
-    if (profile) {
-      // Cek apakah web sedang maintenance dan user BUKAN developer
-      const { data: maint } = await supabaseClient.from('gudang_state').select('state').eq('id', 1).single();
-      if (maint?.state?.maintenance?.enabled && String(profile.role).toLowerCase() !== 'developer') {
-        alert("Akses ditolak: Web sedang dalam pemeliharaan oleh Developer.");
-        await supabaseClient.auth.signOut();
-        return;
+  try {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session && session.user) {
+      const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', session.user.id).single();
+      if (profile) {
+        // Cek maintenance mode
+        const { data: maint } = await supabaseClient.from('gudang_state').select('state').eq('id', 1).single();
+        if (maint?.state?.maintenance?.enabled && String(profile.role).toLowerCase() !== 'developer') {
+          alert("Akses ditolak: Web sedang dalam pemeliharaan oleh Developer.");
+          await supabaseClient.auth.signOut();
+          return;
+        }
+        currentProfile = profile;
+        setupUserSession(profile);
       }
-      currentProfile = profile;
-      setupUserSession(profile);
     }
+  } catch(e) {
+    console.error("Init Session error: ", e);
   }
 }
 
@@ -344,6 +347,7 @@ function setupUserSession(profile) {
   const displayName = profile.full_name || profile.nik || 'Petugas Gudang';
   document.getElementById('headerUserName').textContent = displayName;
   document.getElementById('sessionLabel').textContent = `${displayName} (${isDeveloper() ? 'Developer' : 'Karyawan'})`;
+  document.getElementById('txUser').value = displayName;
   
   // Sembunyikan atau tampilkan menu khusus developer
   document.querySelectorAll('.dev-only').forEach(el => {
@@ -354,6 +358,9 @@ function setupUserSession(profile) {
   document.getElementById('profileName').value = profile.full_name || '';
   document.getElementById('profileRoleBadge').textContent = isDeveloper() ? 'DEVELOPER' : 'KARYAWAN';
 
+  // Inisialisasi tanggal default transaksi ke hari ini
+  document.getElementById('txDate').value = new Date().toISOString().split('T')[0];
+
   renderAll();
   if (isDeveloper()) {
     loadStaff();
@@ -362,7 +369,6 @@ function setupUserSession(profile) {
 }
 
 async function loginApp(nik, password) {
-  // Cek status maintenance sebelum login
   const { data: maint } = await supabaseClient.from('gudang_state').select('state').eq('id', 1).single();
   
   const { data, error } = await supabaseClient.auth.signInWithPassword({ email: loginEmailForNik(nik), password });
@@ -403,7 +409,7 @@ document.getElementById('loginForm').addEventListener('submit', async e => {
   }
 });
 
-// UPDATE PROFIL (Tanpa error loadStaff)
+// UPDATE PROFIL
 document.getElementById('profileForm').addEventListener('submit', async e => {
   e.preventDefault();
   const msg = document.getElementById('profileMessage');
@@ -421,7 +427,7 @@ document.getElementById('profileForm').addEventListener('submit', async e => {
   }
 });
 
-// FITUR DEVELOPER: DAFTARKAN STAFF & ATUR HAK AKSES
+// FITUR DEVELOPER: DAFTARKAN STAFF
 document.getElementById('staffForm').addEventListener('submit', async e => {
   e.preventDefault();
   const msg = document.getElementById('staffMessage');
@@ -433,7 +439,6 @@ document.getElementById('staffForm').addEventListener('submit', async e => {
   const password = document.getElementById('staffPassword').value;
 
   try {
-    // Buat Auth user baru
     const { data: authData, error: authErr } = await supabaseClient.auth.signUp({
       email: loginEmailForNik(nik),
       password: password
@@ -441,7 +446,6 @@ document.getElementById('staffForm').addEventListener('submit', async e => {
     if(authErr) throw authErr;
 
     if(authData.user) {
-      // Masukkan ke tabel profiles dengan role pilihan developer
       const { error: profErr } = await supabaseClient.from('profiles').upsert({
         id: authData.user.id,
         nik: nik,
@@ -469,7 +473,7 @@ async function loadStaff() {
   }
   tbody.innerHTML = data.map(p => `
     <tr>
-      <td>${p.nik}</td>
+      <td>${p.nik || '-'}</td>
       <td>${p.full_name || '-'}</td>
       <td><b>${p.role}</b></td>
       <td>
@@ -491,7 +495,7 @@ async function updateStaffRole(userId, newRole) {
   }
 }
 
-// KONTROL MAINTENANCE OLEH DEVELOPER
+// MAINTENANCE CONTROL
 async function setMaintenance(enabled) {
   const { data } = await supabaseClient.from('gudang_state').select('state').eq('id', 1).single();
   let currentState = data?.state || {};
@@ -519,6 +523,17 @@ function toggleNav(force) {
   back.classList.toggle('show', open);
 }
 
+const pageTitles = {
+  dashboard: 'Dashboard Gudang',
+  transaksi: 'Transaksi Stok',
+  persediaan: 'Master Persediaan',
+  lokasi: 'Lokasi & Kapasitas',
+  pengadaan: 'Stok Menipis',
+  data: 'Import / Export',
+  profil: 'Profil Saya',
+  developer: 'Developer Area'
+};
+
 function go(page) {
   if (!page || !document.getElementById(page)) page = 'dashboard';
   document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
@@ -526,6 +541,10 @@ function go(page) {
   document.querySelectorAll('.nav button, .mobile-tabbar button[data-page]').forEach(b => {
     b.classList.toggle('active', b.dataset.page === page);
   });
+  
+  const titleEl = document.getElementById('pageTitle');
+  if(titleEl && pageTitles[page]) titleEl.textContent = pageTitles[page];
+  
   toggleNav(false);
 }
 
@@ -535,11 +554,159 @@ document.querySelectorAll('.nav button, .mobile-tabbar button[data-page]').forEa
   }
 });
 
+// FUNGSI UTAMA RENDER DATA (PERSEDIAN, TRANSAKSI, DLL)
 function renderAll() {
+  const lowStockItems = state.items.filter(x => Number(x.stock) <= Number(x.min));
+  
   document.getElementById('countItems').textContent = state.items.length;
   document.getElementById('totalStock').textContent = state.items.reduce((a, x) => a + Number(x.stock || 0), 0);
-  document.getElementById('reviewCount').textContent = 0;
-  document.getElementById('lowCount').textContent = 0;
+  document.getElementById('reviewCount').textContent = state.transactions.length;
+  document.getElementById('lowCount').textContent = lowStockItems.length;
+
+  renderInventory();
+  renderLocations();
+  renderReorder();
+  populateTxItems();
+}
+
+function renderInventory() {
+  const query = (document.getElementById('searchItems').value || '').toLowerCase();
+  const filtered = state.items.filter(item => 
+    item.name.toLowerCase().includes(query) || 
+    item.itemNo.toLowerCase().includes(query) ||
+    item.partNo.toLowerCase().includes(query)
+  );
+
+  const tbody = document.getElementById('inventoryRows');
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" class="empty">Tidak ada item ditemukan</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(item => {
+    const isLow = Number(item.stock) <= Number(item.min);
+    const badge = isLow 
+      ? `<span class="pill bad"><i class="fa-solid fa-triangle-exclamation"></i> Menipis</span>`
+      : `<span class="pill good"><i class="fa-solid fa-check"></i> Aman</span>`;
+    return `
+      <tr>
+        <td><b>${item.itemNo}</b></td>
+        <td>${item.name}</td>
+        <td>${item.partNo}</td>
+        <td>${item.stock}</td>
+        <td>${item.min}</td>
+        <td>${item.location}</td>
+        <td>${badge}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderLocations() {
+  const container = document.getElementById('locationRows');
+  if (state.items.length === 0) {
+    container.innerHTML = '<div class="empty">Tidak ada data lokasi.</div>';
+    return;
+  }
+  container.innerHTML = `
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Lokasi</th><th>Nama Barang</th><th>Kategori</th><th>Stok Saat Ini</th></tr></thead>
+        <tbody>
+          ${state.items.map(i => `
+            <tr>
+              <td><b>${i.location}</b></td>
+              <td>${i.name}</td>
+              <td>${i.category || '-'}</td>
+              <td>${i.stock} Unit</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderReorder() {
+  const container = document.getElementById('reorderList');
+  const lowItems = state.items.filter(x => Number(x.stock) <= Number(x.min));
+  if (lowItems.length === 0) {
+    container.innerHTML = '<div class="notice good" style="margin:0"><i class="fa-solid fa-circle-check"></i> Semua persediaan barang dalam kondisi aman.</div>';
+    return;
+  }
+  container.innerHTML = `
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>SKU</th><th>Nama Barang</th><th>Stok</th><th>Min. Stok</th><th>Status</th></tr></thead>
+        <tbody>
+          ${lowItems.map(i => `
+            <tr>
+              <td>${i.itemNo}</td>
+              <td><b>${i.name}</b></td>
+              <td style="color:var(--red); font-weight:bold">${i.stock}</td>
+              <td>${i.min}</td>
+              <td><span class="pill warn">Perlu Restock</span></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function populateTxItems() {
+  const select = document.getElementById('txItem');
+  select.innerHTML = state.items.map(i => `<option value="${i.itemNo}">${i.name} (${i.itemNo}) - Stok: ${i.stock}</option>`).join('');
+}
+
+// HANDLER TRANSAKSI STOK
+document.getElementById('txForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const itemNo = document.getElementById('txItem').value;
+  const qty = Number(document.getElementById('txQty').value);
+  const type = document.getElementById('txType').value;
+  
+  const targetItem = state.items.find(i => i.itemNo === itemNo);
+  if (!targetItem) return alert('Barang tidak ditemukan!');
+
+  if (type === 'KELUAR' && targetItem.stock < qty) {
+    return alert('Stok tidak mencukupi untuk transaksi keluar!');
+  }
+
+  if (type === 'MASUK') {
+    targetItem.stock += qty;
+  } else {
+    targetItem.stock -= qty;
+  }
+
+  state.transactions.push({
+    date: document.getElementById('txDate').value,
+    type,
+    itemNo,
+    qty,
+    doc: document.getElementById('txDoc').value,
+    user: document.getElementById('txUser').value
+  });
+
+  alert('Transaksi berhasil dicatat!');
+  document.getElementById('txQty').value = '';
+  document.getElementById('txDoc').value = '';
+  renderAll();
+  go('persediaan');
+});
+
+// EXPORT CSV
+function exportCSV() {
+  let csv = 'SKU,Nama,PartNo,Stok,MinStok,Lokasi\n';
+  state.items.forEach(i => {
+    csv += `"${i.itemNo}","${i.name}","${i.partNo}",${i.stock},${i.min},"${i.location}"\n`;
+  });
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Persediaan_Gudang_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
 }
 
 document.addEventListener('DOMContentLoaded', initSession);
